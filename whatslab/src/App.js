@@ -8,7 +8,6 @@ class App extends React.Component {
               mensagem: "" 
             }
           ],
-          valorInputMensagem: "" ,
         };
 
         adicionaMensagem= () => {
@@ -20,6 +19,8 @@ class App extends React.Component {
           const arrayMsg = [...this.state.info, novaMsg];
       
           this.setState({info: arrayMsg});
+
+          this.setState({valorInputMensagem: ''})
         };
       
         onChangeInputUsuario= (event) => {
@@ -28,32 +29,38 @@ class App extends React.Component {
         onChangeInputMensagem = (event) => {
           this.setState({ valorInputMensagem: event.target.value });
         };
-      
+    
         render() {
           const listaDeComponentes = this.state.info.map((dados) => {
             return (
             <div >
-             <strong>{dados.usuario}:</strong> {dados.mensagem}
+              <p><strong>{dados.usuario}</strong>{dados.mensagem}</p>
+
             </div>
+    
             );
           });
           return (
             <div>
-              <div>{listaDeComponentes}</div>
-              <div>
+              <div className="box-1">{listaDeComponentes}</div>
+              <div className="box-2">
                 <input
+                className="box-usuario"
                   value={this.state.valorInputUsuario}
                   onChange={this.onChangeInputUsuario}
                   placeholder={"Usuário"}
                 />
                 <input
+                  className="box-mensagem"
                   value={this.state.valorInputMensagem}
                   onChange={this.onChangeInputMensagem}
                   placeholder={"Mensagem"}
                 />
                 <button onClick={this.adicionaMensagem}>Enviar</button>
               </div>
+              
             </div>
+            
           );
       }
   }
