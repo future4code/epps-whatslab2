@@ -1,67 +1,92 @@
 import React from 'react';
-import './App.css';
+import styled from 'styled-components'
+
+const Box1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  border: 1px solid black;
+  height: 100vh;
+  width: 600px;
+  margin: auto;
+  padding: 20px;
+`
+
+const Box2 = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  flex-grow: 1;
+  padding: 20px;
+  margin:auto;
+`
+
+const BoxInputs = styled.div`
+  display: flex;
+`
+
+const InputNome = styled.input`
+  width: 100px;
+`
+
+const InputMensagem = styled.input`
+  flex-grow: 1;
+`
+
 class App extends React.Component {
-        state = {
-          info: [
-            {
-              usuario: "",
-              mensagem: "" 
-            }
-          ],
-        };
-
-        adicionaMensagem= () => {
-          const novaMsg = {
-            usuario: this.state.valorInputUsuario,
-            mensagem: this.state.valorInputMensagem,
-          };
-      
-          const arrayMsg = [...this.state.info, novaMsg];
-      
-          this.setState({info: arrayMsg});
-
-          this.setState({valorInputMensagem: ''})
-        };
-      
-        onChangeInputUsuario= (event) => {
-          this.setState({ valorInputUsuario: event.target.value });
-        };
-        onChangeInputMensagem = (event) => {
-          this.setState({ valorInputMensagem: event.target.value });
-        };
-    
-        render() {
-          const listaDeComponentes = this.state.info.map((dados) => {
-            return (
-            <div >
-              <p><strong>{dados.usuario}</strong>{dados.mensagem}</p>
-
-            </div>
-    
-            );
-          });
-          return (
-            <div>
-              <div className="box-1">{listaDeComponentes}</div>
-              <div className="box-2">
-                <input
-                className="box-usuario"
-                  value={this.state.valorInputUsuario}
-                  onChange={this.onChangeInputUsuario}
-                  placeholder={"Usuário"}
-                />
-                <input
-                  className="box-mensagem"
-                  value={this.state.valorInputMensagem}
-                  onChange={this.onChangeInputMensagem}
-                  placeholder={"Mensagem"}
-                />
-                <button onClick={this.adicionaMensagem}>Enviar</button>
-              </div>
-              
-            </div>
-            
-          );
-      }
+  state = {
+    arrayMensagens: [],
+    inputUsuario: '',
+    inputMensagem: ''
   }
-    export default App;
+
+  onChangeInputUsuario= (event) => {
+    this.setState({ inputUsuario: event.target.value });
+  }
+
+  onChangeInputMensagem = (event) => {
+    this.setState({ inputMensagem: event.target.value });
+  }
+
+  adicionaMensagem = () => {
+    const novaMsg = {
+      usuario: this.state.inputUsuario,
+      textoMensagem: this.state.inputMensagem
+    }
+    
+    const novoArrayMensagens = [novaMsg, ...this.state.arrayMensagens]
+
+    this.setState({arrayMensagens: novoArrayMensagens, inputMensagem: ''})
+  }
+
+  render() {
+    return (
+      <Box1>
+        <Box2>
+          {this.state.arrayMensagens.map((msg, index) => {
+            return <p key = {index} > 
+              <strong>{msg.usuario}</strong>: {msg.textoMensagem}
+            </p>
+          })}
+        </Box2>
+        <BoxInputs>
+          <InputNome 
+            placeholder={'Nome'}
+            onChange = {this.onChangeInputUsuario}
+            value = {this.state.inputUsuario}
+          />
+
+          <InputMensagem 
+            placeholder={'Mensagem'}
+            onChange = {this.onChangeInputMensagem}
+            value = {this.state.inputMensagem}
+          />
+          <button onClick = {this.adicionaMensagem}>Enviar</button>
+        </BoxInputs>
+      </Box1>
+    );
+  }
+}
+
+export default App;
